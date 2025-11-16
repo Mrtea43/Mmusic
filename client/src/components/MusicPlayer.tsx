@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Play, Pause, SkipBack, SkipForward, Volume2, ExternalLink, Heart } from 'lucide-react';
-import { songs, Song } from '@/data/songs';
+import { songs } from '@/data/songs';
 import { Button } from '@/components/ui/button';
 
 export default function MusicPlayer() {

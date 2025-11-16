@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Music, Play, Zap, Volume2, Radio } from "lucide-react";
-import { APP_LOGO, APP_TITLE } from "@/const";
 import MusicPlayer from "@/components/MusicPlayer";
 import ThemeToggle from "@/components/ThemeToggle";
 
