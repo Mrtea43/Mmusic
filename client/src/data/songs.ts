@@ -76,5 +76,115 @@ export const songs: Song[] = [
     upvotes: 1,
     sunoUrl: 'https://suno.com/song/46fcad0b-b035-4519-a9e1-dce70032d818',
     tags: 'D&B, Dubstep, Electronic, Techno'
+  },
+  {
+    id: '7',
+    title: "Crimson Echo",
+    artist: 'CrashingBallade7803',
+    audioUrl: 'https://cdn1.suno.ai/a7e2fa19-6465-4528-b69a-62082e97d4ee.mp3',
+    imageUrl: 'https://cdn2.suno.ai/image_a7e2fa19-6465-4528-b69a-62082e97d4ee.jpeg',
+    plays: 10,
+    upvotes: 2,
+    sunoUrl: 'https://suno.com/song/a7e2fa19-6465-4528-b69a-62082e97d4ee',
+    tags: 'UK Garage, Half-time flow, Vocal stutters'
+  },
+  {
+    id: '8',
+    title: "Crimson Echo (UK Garage)",
+    artist: 'CrashingBallade7803',
+    audioUrl: 'https://cdn1.suno.ai/2edd47b8-a6af-40b3-b0b5-1e1069f3768e.mp3',
+    imageUrl: 'https://cdn2.suno.ai/3beda526-b791-40de-ac02-792db63ab637.jpeg',
+    plays: 18,
+    upvotes: 3,
+    sunoUrl: 'https://suno.com/song/2edd47b8-a6af-40b3-b0b5-1e1069f3768e',
+    tags: 'UK Garage'
+  },
+  {
+    id: '9',
+    title: "You and Me",
+    artist: 'CrashingBallade7803',
+    audioUrl: 'https://cdn1.suno.ai/4275fe75-506b-4569-be0f-ef599ddd3c0a.mp3',
+    imageUrl: 'https://cdn2.suno.ai/4899d8f6-4f43-4dd9-9404-893255003b6a.jpeg',
+    plays: 6,
+    upvotes: 1,
+    sunoUrl: 'https://suno.com/song/4275fe75-506b-4569-be0f-ef599ddd3c0a',
+    tags: 'Shoegaze, Dream Pop'
+  },
+  {
+    id: '10',
+    title: "BIONIC",
+    artist: 'CrashingBallade7803',
+    audioUrl: 'https://cdn1.suno.ai/6ad073f4-51a8-4a57-8158-df5512fa1048.mp3',
+    imageUrl: 'https://cdn2.suno.ai/ff57e7f9-e5e1-4471-a939-31f8ce74c59d.jpeg',
+    plays: 7,
+    upvotes: 1,
+    sunoUrl: 'https://suno.com/song/6ad073f4-51a8-4a57-8158-df5512fa1048',
+    tags: 'D&B, Dubstep, Electronic, Techno'
+  },
+  {
+    id: '11',
+    title: "The Escape Route (Jungle Mix)",
+    artist: 'CrashingBallade7803',
+    audioUrl: 'https://cdn1.suno.ai/f2b5e070-f247-4c16-b495-4688164d5c71.mp3',
+    imageUrl: 'https://cdn2.suno.ai/61ceb899-b1dd-4e36-aa5c-30483280d6f1.jpeg',
+    plays: 3,
+    upvotes: 0,
+    sunoUrl: 'https://suno.com/song/f2b5e070-f247-4c16-b495-4688164d5c71',
+    tags: 'D&B, Jungle, Drum and Bass'
+  },
+  {
+    id: '12',
+    title: "Forever Unfinished (EDM Mix)",
+    artist: 'CrashingBallade7803',
+    audioUrl: 'https://cdn1.suno.ai/19021700-efb0-422e-8933-25b9a5154cbe.mp3',
+    imageUrl: 'https://cdn2.suno.ai/0f337431-ae0d-4493-a6f8-e89abd803514.jpeg',
+    plays: 7,
+    upvotes: 2,
+    sunoUrl: 'https://suno.com/song/19021700-efb0-422e-8933-25b9a5154cbe',
+    tags: 'EDM'
+  },
+  {
+    id: '13',
+    title: "Forever Unfinished",
+    artist: 'CrashingBallade7803',
+    audioUrl: 'https://cdn1.suno.ai/e5bd4d53-9f31-4311-8538-9151231bd689.mp3',
+    imageUrl: 'https://cdn2.suno.ai/c26924b8-b81a-4af1-81e7-e41fa1081833.jpeg',
+    plays: 4,
+    upvotes: 1,
+    sunoUrl: 'https://suno.com/song/e5bd4d53-9f31-4311-8538-9151231bd689',
+    tags: 'D&B, Dubstep, Trance'
+  },
+  {
+    id: '14',
+    title: "Dead Drop Neurofunk",
+    artist: 'CrashingBallade7803',
+    audioUrl: 'https://cdn1.suno.ai/2616dc9d-00c7-4343-baeb-95f0f8a0c99b.mp3',
+    imageUrl: 'https://cdn2.suno.ai/a5e3843d-04ce-4ec9-ba09-26a8a158c6c9.jpeg',
+    plays: 8,
+    upvotes: 2,
+    sunoUrl: 'https://suno.com/song/2616dc9d-00c7-4343-baeb-95f0f8a0c99b',
+    tags: 'D&B, Dubstep, Electronic, Techno, Neurofunk'
+  },
+  {
+    id: '15',
+    title: "Soundwave",
+    artist: 'CrashingBallade7803',
+    audioUrl: 'https://cdn1.suno.ai/fb07ab47-6239-4a8d-9fcf-0b9163939588.mp3',
+    imageUrl: 'https://cdn2.suno.ai/0a2948da-1b8c-46f7-82e0-a153c728e5d4.jpeg',
+    plays: 14,
+    upvotes: 1,
+    sunoUrl: 'https://suno.com/song/fb07ab47-6239-4a8d-9fcf-0b9163939588',
+    tags: 'D&B, Dubstep, Electronic, Techno'
+  },
+  {
+    id: '16',
+    title: "All The Time (Wub Mix)",
+    artist: 'CrashingBallade7803',
+    audioUrl: 'https://cdn1.suno.ai/ad332d7b-0004-44eb-9e9c-9f8ad77c8ac3.mp3',
+    imageUrl: 'https://cdn2.suno.ai/12749f4f-f8cf-4406-b737-920cbb8371e6.jpeg',
+    plays: 20,
+    upvotes: 1,
+    sunoUrl: 'https://suno.com/song/ad332d7b-0004-44eb-9e9c-9f8ad77c8ac3',
+    tags: 'D&B, Dubstep, Electronic, Techno'
   }
 ];
