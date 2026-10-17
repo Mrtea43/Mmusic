@@ -1,90 +1,10 @@
-import { useState, useRef, useEffect } from 'react';
-import { Play, Pause, SkipBack, SkipForward, Volume2, ExternalLink, Heart } from 'lucide-react';
+import { useState } from 'react';
+import { Play, ExternalLink, Heart } from 'lucide-react';
 import { songs } from '@/data/songs';
-import { Button } from '@/components/ui/button';
 
 export default function MusicPlayer() {
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [volume, setVolume] = useState(1);
-  const audioRef = useRef<HTMLAudioElement>(null);
-
   const currentSong = songs[currentSongIndex];
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    const updateTime = () => setCurrentTime(audio.currentTime);
-    const updateDuration = () => setDuration(audio.duration);
-    const handleEnded = () => handleNext();
-
-    audio.addEventListener('timeupdate', updateTime);
-    audio.addEventListener('loadedmetadata', updateDuration);
-    audio.addEventListener('ended', handleEnded);
-
-    return () => {
-      audio.removeEventListener('timeupdate', updateTime);
-      audio.removeEventListener('loadedmetadata', updateDuration);
-      audio.removeEventListener('ended', handleEnded);
-    };
-  }, [currentSongIndex]);
-
-  const togglePlay = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
-
-  const handleNext = () => {
-    setCurrentSongIndex((prev) => (prev + 1) % songs.length);
-    setIsPlaying(true);
-  };
-
-  const handlePrevious = () => {
-    setCurrentSongIndex((prev) => (prev - 1 + songs.length) % songs.length);
-    setIsPlaying(true);
-  };
-
-  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newTime = parseFloat(e.target.value);
-    setCurrentTime(newTime);
-    if (audioRef.current) {
-      audioRef.current.currentTime = newTime;
-    }
-  };
-
-  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newVolume = parseFloat(e.target.value);
-    setVolume(newVolume);
-    if (audioRef.current) {
-      audioRef.current.volume = newVolume;
-    }
-  };
-
-  const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-  };
-
-  const selectSong = (index: number) => {
-    setCurrentSongIndex(index);
-    setIsPlaying(true);
-  };
-
-  useEffect(() => {
-    if (audioRef.current && isPlaying) {
-      audioRef.current.play();
-    }
-  }, [currentSongIndex]);
 
   return (
     <div className="w-full max-w-6xl mx-auto">
@@ -117,70 +37,24 @@ export default function MusicPlayer() {
               </div>
             </div>
 
-            {/* Progress Bar */}
-            <div className="space-y-2">
-              <input
-                type="range"
-                min="0"
-                max={duration || 0}
-                value={currentTime}
-                onChange={handleSeek}
-                className="w-full h-1 bg-muted rounded-sm appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-foreground"
-              />
-              <div className="flex justify-between text-xs font-digital text-muted-foreground">
-                <span>{formatTime(currentTime)}</span>
-                <span>{formatTime(duration)}</span>
-              </div>
-            </div>
-
-            {/* Controls */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <Button
-                  variant="ghost"
-                  className="rounded-sm"
-                  onClick={handlePrevious}
-                >
-                  <SkipBack className="w-5 h-5" />
-                </Button>
-                <Button
-                  className="bg-foreground text-background hover:bg-foreground/90 rounded-sm w-12 h-12"
-                  onClick={togglePlay}
-                >
-                  {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6" />}
-                </Button>
-                <Button
-                  variant="ghost"
-                  className="rounded-sm"
-                  onClick={handleNext}
-                >
-                  <SkipForward className="w-5 h-5" />
-                </Button>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Volume2 className="w-4 h-4 text-muted-foreground" />
-                <input
-                  type="range"
-                  min="0"
-                  max="1"
-                  step="0.01"
-                  value={volume}
-                  onChange={handleVolumeChange}
-                  className="w-24 h-1 bg-muted rounded-sm appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-2 [&::-webkit-slider-thumb]:h-2 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-foreground"
-                />
-                <a
-                  href={currentSong.sunoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="ml-4"
-                >
-                  <Button variant="ghost" className="rounded-sm">
-                    <ExternalLink className="w-4 h-4" />
-                  </Button>
-                </a>
-              </div>
-            </div>
+            <iframe
+              key={currentSong.id}
+              src={currentSong.sunoUrl.replace('/song/', '/embed/')}
+              title={`Play ${currentSong.title} on Suno`}
+              allow="autoplay; encrypted-media; fullscreen"
+              className="w-full h-60 border-0 rounded-sm"
+            />
+            <p className="text-sm text-muted-foreground">
+              Select a song below, then press play in the Suno player.
+            </p>
+            <a
+              href={currentSong.sunoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm underline"
+            >
+              Open on Suno <ExternalLink className="w-4 h-4" />
+            </a>
           </div>
         </div>
       </div>
@@ -192,7 +66,8 @@ export default function MusicPlayer() {
           {songs.map((song, index) => (
             <button
               key={song.id}
-              onClick={() => selectSong(index)}
+              onClick={() => setCurrentSongIndex(index)}
+              aria-pressed={index === currentSongIndex}
               className={`w-full p-3 rounded-sm text-left transition-colors flex items-center gap-4 ${
                 index === currentSongIndex
                   ? 'bg-foreground text-background'
@@ -223,7 +98,6 @@ export default function MusicPlayer() {
         </div>
       </div>
 
-      <audio ref={audioRef} src={currentSong.audioUrl} />
     </div>
   );
 }
