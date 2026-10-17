@@ -193,15 +193,15 @@ export default function MusicPlayer() {
       </div>
 
       {/* Playlist */}
-      <div className="bg-card border border-border rounded-sm p-6">
+      <div className="bg-card border border-border rounded-sm p-4 sm:p-6">
         <h4 className="text-lg font-orbitron font-bold mb-4">PLAYLIST</h4>
-        <div className="space-y-2">
+        <div className="song-playlist space-y-2 max-h-[30rem] overflow-y-auto pr-2" role="group" aria-label="Song playlist">
           {songs.map((song, index) => (
             <button
               key={song.id}
               onClick={() => selectSong(index)}
               aria-pressed={index === currentSongIndex}
-              className={`w-full p-3 rounded-sm text-left transition-colors flex items-center gap-4 ${
+              className={`w-full p-3 rounded-sm text-left transition-colors flex items-center gap-3 sm:gap-4 ${
                 index === currentSongIndex
                   ? 'bg-foreground text-background'
                   : 'hover:bg-muted'
@@ -215,10 +215,10 @@ export default function MusicPlayer() {
                 />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-digital font-bold truncate">{song.title}</p>
-                <p className="text-sm opacity-70 font-digital">{song.artist}</p>
+                <p className="font-digital font-bold text-sm sm:text-base truncate">{song.title}</p>
+                <p className="text-xs sm:text-sm opacity-70 font-digital truncate">{song.artist}</p>
               </div>
-              <div className="flex gap-3 text-xs opacity-70">
+              <div className="hidden sm:flex gap-3 text-xs opacity-70">
                 <span className="flex items-center gap-1">
                   <Play className="w-3 h-3" /> {song.plays}
                 </span>
