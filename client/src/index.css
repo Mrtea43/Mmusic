@@ -174,10 +174,9 @@
   .cover-description .muted-text { font-size: .66rem; }
   .cover-description h2 { font-size: .9rem; line-height: 1.5; margin-top: .3rem; }
   .cover-count { white-space: nowrap; font-size: .7rem; padding-top: .2rem; color: var(--muted-foreground); }
-  .cover-controls { display: flex; align-items: center; justify-content: space-between; gap: 1rem; border-top: 1px solid var(--border); padding-top: .6rem; }
+  .cover-controls { display: flex; align-items: center; justify-content: flex-end; gap: 1rem; border-top: 1px solid var(--border); padding-top: .6rem; }
   .icon-control { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px; border: 1px solid var(--border); background: var(--background); }
   .icon-control:hover { background: var(--muted); }
-  .text-control { display: inline-flex; align-items: center; gap: .6rem; min-height: 44px; font-size: .68rem; }
   .muted-text { color: var(--muted-foreground); font-size: .75rem; line-height: 1.8; }
   .section-space { padding-top: 5rem; padding-bottom: 5rem; }
   .player-section { background: var(--card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }

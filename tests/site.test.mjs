@@ -40,7 +40,8 @@ test('the hero offers accessible grayscale cover browsing', async () => {
   assert.ok(html.includes('aria-roledescription="carousel"'));
   assert.ok(html.includes('aria-label="Next cover"'));
   assert.ok(html.includes('aria-label="Previous cover"'));
-  assert.ok(/aria-label="(?:Pause|Play) slideshow"/.test(html));
+  assert.ok(!/aria-label="(?:Pause|Play) slideshow"/.test(html), 'The slideshow starts without a play/pause button');
+  assert.ok(html.includes('src="./music-mark.png"'), 'Use the supplied music-note logo on the cover');
   assert.ok(html.includes('Miles and Empty Space cover artwork'));
 });
 
