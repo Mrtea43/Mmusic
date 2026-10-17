@@ -21,7 +21,7 @@ export default function HeroCarousel({ active = true }: { active?: boolean }) {
             aria-hidden={coverIndex !== index}
           />
         ))}
-        <div className="cover-stamp" aria-hidden="true"><img src="./music-mark.png" alt="" width="26" height="26" /></div>
+        <div className="cover-stamp" aria-hidden="true"><img src="./music-mark.svg" alt="" width="28" height="28" /></div>
       </div>
       <div className="cover-caption">
         <div className="cover-description"><span className="muted-text">From the collection</span><h2>{song.title}</h2></div>
