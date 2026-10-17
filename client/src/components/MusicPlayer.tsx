@@ -1,10 +1,86 @@
-import { useState } from 'react';
-import { Play, ExternalLink, Heart } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Play, Pause, SkipBack, SkipForward, Volume2, ExternalLink, Heart } from 'lucide-react';
 import { songs } from '@/data/songs';
+import { Button } from '@/components/ui/button';
 
 export default function MusicPlayer() {
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(1);
+  const [playbackError, setPlaybackError] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const shouldPlayRef = useRef(false);
   const currentSong = songs[currentSongIndex];
+
+  const handlePlaybackError = () => {
+    setIsPlaying(false);
+    setPlaybackError('Unable to play this track. Try again, or open it on Suno.');
+  };
+
+  const playAudio = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    setPlaybackError(null);
+    if (audio.error) audio.load();
+    const source = audio.src;
+    void audio.play().catch((error: unknown) => {
+      // Changing tracks or pausing can cancel a pending play request.
+      if (error instanceof DOMException && error.name === 'AbortError') return;
+      if (audio.src === source) handlePlaybackError();
+    });
+  };
+
+  const selectSong = (index: number) => {
+    shouldPlayRef.current = true;
+    if (index === currentSongIndex) {
+      playAudio();
+    } else {
+      setCurrentTime(0);
+      setDuration(0);
+      setPlaybackError(null);
+      setCurrentSongIndex(index);
+    }
+  };
+
+  const handleNext = () => selectSong((currentSongIndex + 1) % songs.length);
+  const handlePrevious = () => selectSong((currentSongIndex - 1 + songs.length) % songs.length);
+
+  useEffect(() => {
+    if (shouldPlayRef.current) playAudio();
+  }, [currentSongIndex]);
+
+  const togglePlay = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (!audio.paused) {
+      shouldPlayRef.current = false;
+      audio.pause();
+    } else {
+      shouldPlayRef.current = true;
+      playAudio();
+    }
+  };
+
+  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!audioRef.current || !duration) return;
+    const newTime = Math.min(duration, Math.max(0, Number(e.target.value)));
+    audioRef.current.currentTime = newTime;
+    setCurrentTime(newTime);
+  };
+
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newVolume = Number(e.target.value);
+    setVolume(newVolume);
+    if (audioRef.current) audioRef.current.volume = newVolume;
+  };
+
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
 
   return (
     <div className="w-full max-w-6xl mx-auto">
@@ -37,24 +113,81 @@ export default function MusicPlayer() {
               </div>
             </div>
 
-            <iframe
-              key={currentSong.id}
-              src={currentSong.sunoUrl.replace('/song/', '/embed/')}
-              title={`Play ${currentSong.title} on Suno`}
-              allow="autoplay; encrypted-media; fullscreen"
-              className="w-full h-60 border-0 rounded-sm"
-            />
-            <p className="text-sm text-muted-foreground">
-              Select a song below, then press play in the Suno player.
-            </p>
-            <a
-              href={currentSong.sunoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm underline"
-            >
-              Open on Suno <ExternalLink className="w-4 h-4" />
-            </a>
+            {/* Progress Bar */}
+            <div className="space-y-2">
+              <input
+                type="range"
+                min="0"
+                aria-label="Seek"
+                disabled={!duration}
+                max={duration || 0}
+                value={currentTime}
+                onChange={handleSeek}
+                className="w-full h-1 bg-muted rounded-sm appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-foreground"
+              />
+              <div className="flex justify-between text-xs font-digital text-muted-foreground">
+                <span>{formatTime(currentTime)}</span>
+                <span>{formatTime(duration)}</span>
+              </div>
+            </div>
+
+            {playbackError && (
+              <p role="alert" className="text-sm text-foreground border border-border rounded-sm p-3">
+                {playbackError}
+              </p>
+            )}
+
+            {/* Controls */}
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <Button
+                  variant="ghost"
+                  className="rounded-sm w-11 h-11"
+                  aria-label="Previous track"
+                  onClick={handlePrevious}
+                >
+                  <SkipBack className="w-5 h-5" />
+                </Button>
+                <Button
+                  className="bg-foreground text-background hover:bg-foreground/90 rounded-sm w-12 h-12"
+                  aria-label={isPlaying ? 'Pause' : 'Play'}
+                  onClick={togglePlay}
+                >
+                  {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6" />}
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="rounded-sm w-11 h-11"
+                  aria-label="Next track"
+                  onClick={handleNext}
+                >
+                  <SkipForward className="w-5 h-5" />
+                </Button>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Volume2 className="w-4 h-4 text-muted-foreground" />
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  aria-label="Volume"
+                  step="0.01"
+                  value={volume}
+                  onChange={handleVolumeChange}
+                  className="w-24 h-1 bg-muted rounded-sm appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-2 [&::-webkit-slider-thumb]:h-2 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-foreground"
+                />
+                <a
+                  aria-label="Open on Suno"
+                  href={currentSong.sunoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ml-4 inline-flex items-center justify-center w-11 h-11 rounded-sm hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -66,7 +199,7 @@ export default function MusicPlayer() {
           {songs.map((song, index) => (
             <button
               key={song.id}
-              onClick={() => setCurrentSongIndex(index)}
+              onClick={() => selectSong(index)}
               aria-pressed={index === currentSongIndex}
               className={`w-full p-3 rounded-sm text-left transition-colors flex items-center gap-4 ${
                 index === currentSongIndex
@@ -98,6 +231,25 @@ export default function MusicPlayer() {
         </div>
       </div>
 
+      <audio
+        ref={audioRef}
+        src={currentSong.audioUrl}
+        preload="metadata"
+        onPlaying={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+        onLoadStart={() => {
+          setIsPlaying(false);
+          setCurrentTime(0);
+          setDuration(0);
+        }}
+        onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
+        onDurationChange={(e) => {
+          const value = e.currentTarget.duration;
+          setDuration(Number.isFinite(value) ? value : 0);
+        }}
+        onEnded={handleNext}
+        onError={handlePlaybackError}
+      />
     </div>
   );
 }
