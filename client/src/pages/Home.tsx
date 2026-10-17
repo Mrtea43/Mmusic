@@ -6,7 +6,6 @@ import HeroCarousel from '@/components/HeroCarousel';
 import Information from '@/pages/Information';
 import { JournalArticle, JournalPreview, NotFound } from '@/pages/Journal';
 import { journal } from '@/data/journal';
-import { songs } from '@/data/songs';
 
 export default function Home() {
   const [hash, setHash] = useState(() => typeof window === 'undefined' ? '' : window.location.hash);
@@ -44,7 +43,6 @@ export default function Home() {
             <h1>Monogram<br />Music.</h1>
             <p className="hero-intro">Shoegaze, garage, trance and whatever comes next. A collection of music by CrashingBallade7803.</p>
             <a href="#player" className="primary-link"><Play className="w-4 h-4" />Listen to the collection</a>
-            <p className="hero-footnote">{songs.length} tracks. One place to listen.</p>
           </div>
           <HeroCarousel active={isHome} />
         </section>

@@ -38,8 +38,12 @@ test('navigation exposes the three real destinations and removes fake store link
 test('the hero offers accessible grayscale cover browsing', async () => {
   const html = await renderSite();
   assert.ok(html.includes('aria-roledescription="carousel"'));
-  assert.ok(html.includes('aria-label="Next cover"'));
-  assert.ok(html.includes('aria-label="Previous cover"'));
+  assert.ok(!html.includes('aria-label="Next cover"'));
+  assert.ok(!html.includes('aria-label="Previous cover"'));
+  assert.ok(!html.includes('tracks. One place to listen.'));
+  const covers = html.match(/class="cover-image(?: is-active)?"/g) || [];
+  assert.equal(covers.length, 18, 'Keep covers mounted so opacity can transition between them');
+  assert.equal(covers.filter((cover) => cover.includes('is-active')).length, 1);
   assert.ok(!/aria-label="(?:Pause|Play) slideshow"/.test(html), 'The slideshow starts without a play/pause button');
   assert.ok(html.includes('src="./music-mark.png"'), 'Use the supplied music-note logo on the cover');
   assert.ok(html.includes('Miles and Empty Space cover artwork'));
